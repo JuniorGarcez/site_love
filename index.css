@@ -103,3 +103,7 @@ body {
   margin: auto;
   text-align: center;
 }
+
+#copy{
+  font-size: 11px;
+}
