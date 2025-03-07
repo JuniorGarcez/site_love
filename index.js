@@ -28,44 +28,58 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   
-    updateSlide(currentIndex); // Garante que o primeiro slide seja visível ao carregar
-    startAutoSlide(); // Inicia o carrossel automático
+    updateSlide(currentIndex);
+    startAutoSlide();
 
     function atualizarContador() {
-        const dataInicial = new Date("2024-09-07T00:00:00"); // Ajuste a data inicial desejada
-        const dataAtual = new Date();
-        
-        let diferenca = dataAtual - dataInicial; // Diferença em milissegundos
-    
-        // Cálculo do tempo decorrido
-        let anos = Math.floor(diferenca / (1000 * 60 * 60 * 24 * 365));
-        diferenca -= anos * (1000 * 60 * 60 * 24 * 365);
-    
-        let meses = Math.floor(diferenca / (1000 * 60 * 60 * 24 * 30.44)); // Média de dias por mês
-        diferenca -= meses * (1000 * 60 * 60 * 24 * 30.44);
-    
-        let dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-        diferenca -= dias * (1000 * 60 * 60 * 24);
-    
-        let horas = Math.floor(diferenca / (1000 * 60 * 60));
-        diferenca -= horas * (1000 * 60 * 60);
-    
-        let minutos = Math.floor(diferenca / (1000 * 60));
-        diferenca -= minutos * (1000 * 60);
-    
-        let segundos = Math.floor(diferenca / 1000);
-    
-        // Atualiza os elementos na página
-        document.getElementById("anos").textContent = anos;
-        document.getElementById("meses").textContent = meses;
-        document.getElementById("dias").textContent = dias;
-        document.getElementById("horas").textContent = horas;
-        document.getElementById("minutos").textContent = minutos;
-        document.getElementById("segundos").textContent = segundos;
+      const dataInicial = new Date("2024-09-07T00:00:00");
+      const dataAtual = new Date();
+  
+      let anoInicial = dataInicial.getFullYear();
+      let mesInicial = dataInicial.getMonth();
+      let diaInicial = dataInicial.getDate();
+  
+      let anoAtual = dataAtual.getFullYear();
+      let mesAtual = dataAtual.getMonth();
+      let diaAtual = dataAtual.getDate();
+  
+      let anos = anoAtual - anoInicial;
+      
+      let meses = mesAtual - mesInicial;
+      if (meses < 0) {
+          anos--;
+          meses += 12;
       }
-    
-      // Atualiza o contador a cada segundo
-      setInterval(atualizarContador, 1000);    // Chama a função imediatamente para evitar o atraso de 1 segundo
-    atualizarContador();
+  
+      let dias = diaAtual - diaInicial;
+      if (dias < 0) {
+          let ultimoDiaMesAnterior = new Date(anoAtual, mesAtual, 0).getDate();
+          dias += ultimoDiaMesAnterior;
+          meses--;
+          if (meses < 0) {
+              anos--;
+              meses += 12;
+          }
+      }
+  
+      let diferencaMilissegundos = dataAtual - new Date(anoAtual, mesAtual, diaInicial);
+      let horas = Math.floor(diferencaMilissegundos / (1000 * 60 * 60));
+      diferencaMilissegundos -= horas * (1000 * 60 * 60);
+      
+      let minutos = Math.floor(diferencaMilissegundos / (1000 * 60));
+      diferencaMilissegundos -= minutos * (1000 * 60);
+      
+      let segundos = Math.floor(diferencaMilissegundos / 1000);
+  
+      document.getElementById("anos").textContent = anos;
+      document.getElementById("meses").textContent = meses;
+      document.getElementById("dias").textContent = dias;
+      document.getElementById("horas").textContent = horas;
+      document.getElementById("minutos").textContent = minutos;
+      document.getElementById("segundos").textContent = segundos;
+  }
+  setInterval(atualizarContador, 1000);
+  atualizarContador();
+  
   });
   
